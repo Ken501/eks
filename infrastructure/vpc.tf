@@ -74,14 +74,11 @@ resource "aws_subnet" "public01" {
   availability_zone = local.az[0]
   map_public_ip_on_launch = true
 
-  tags = merge(
-    var.additional_tags,
-    {
-       Name = "${var.app_name}-Public-1"
-       "kubernetes.io/cluster/${aws_eks_cluster.eks_cluster.name}" = "owned"
-       "kubernetes.io/role/elb" = "1"
-    },
-  )
+  tags = {
+   Name = "${var.app_name}-Public-1"
+   "kubernetes.io/cluster/${aws_eks_cluster.eks_cluster.name}" = "owned"
+   "kubernetes.io/role/elb" = "1"
+  }
 }
 
 resource "aws_subnet" "public02" {
@@ -90,14 +87,11 @@ resource "aws_subnet" "public02" {
   availability_zone = local.az[1]
   map_public_ip_on_launch = true
 
-  tags = merge(
-    var.additional_tags,
-    {
-       Name = "${var.app_name}-Public-2"
-       "kubernetes.io/cluster/${aws_eks_cluster.eks_cluster.name}" = "owned"
-       "kubernetes.io/role/elb" = "1"
-    },
-  )
+  tags = {
+   Name = "${var.app_name}-Public-2"
+   "kubernetes.io/cluster/${aws_eks_cluster.eks_cluster.name}" = "owned"
+   "kubernetes.io/role/elb" = "1"
+  }
 }
 
 
@@ -107,14 +101,11 @@ resource "aws_subnet" "private01" {
     cidr_block = local.private_subnets[0]
     availability_zone = local.az[0]
 
-  tags = merge(
-    var.additional_tags,
-    {
-       Name = "${var.app_name}-Private-1"
-       "kubernetes.io/cluster/${aws_eks_cluster.eks_cluster.name}" = "owned"
-       "kubernetes.io/role/internal-elb" = "1"
-    },
-  )
+  tags = {
+   Name = "${var.app_name}-Private-1"
+   "kubernetes.io/cluster/${aws_eks_cluster.eks_cluster.name}" = "owned"
+   "kubernetes.io/role/internal-elb" = "1"
+  }
 }
 
 resource "aws_subnet" "private02" {
@@ -122,14 +113,11 @@ resource "aws_subnet" "private02" {
     cidr_block = local.private_subnets[1]
     availability_zone = local.az[1]
 
-  tags = merge(
-    var.additional_tags,
-    {
-       Name = "${var.app_name}-Private-2"
-       "kubernetes.io/cluster/${aws_eks_cluster.eks_cluster.name}" = "owned"
-       "kubernetes.io/role/internal-elb" = "1"
-    },
-  )
+  tags = {
+   Name = "${var.app_name}-Private-2"
+   "kubernetes.io/cluster/${aws_eks_cluster.eks_cluster.name}" = "owned"
+   "kubernetes.io/role/internal-elb" = "1"
+  }
 }
 
 // Route table
