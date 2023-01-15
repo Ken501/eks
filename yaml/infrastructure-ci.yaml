@@ -1,0 +1,123 @@
+trigger:
+  branches:
+    include:
+    - master
+    - feature/*
+    - fix/*
+    - bug/*
+    - test/*
+
+  paths:
+    include:
+    - infrastructure
+    exclude:
+    - .attachments
+    - yaml
+
+variables:
+- group: 'deployment-keys'
+- name: files.path
+  value: infrastructure
+- name: app_name
+  value: 'k8s'
+- name: 'tf.path'
+  value: 'infrastructure'
+
+stages:
+
+- stage: Dev
+  displayName: 'Deploy Dev'
+  condition: and(always(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+  dependsOn: []
+  variables:
+  - name: 'environment'
+    value: 'dev'
+  jobs:
+
+  - deployment: deployDev
+    displayName: Deploy Dev
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    environment: 'dev-$(app_name)'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+          - template: templates/infrastructure-cd.yaml
+            parameters:
+              hclServiceConnection: "hcl-svc"
+              cspServiceConnection: "csp-svc"
+
+  - job: devDestructionApproval
+    displayName: Approve Dev Destruction
+    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+    dependsOn: ['deployDev']
+    pool: server
+    timeoutInMinutes: 43800
+    steps:
+      - task: ManualValidation@0
+        timeoutInMinutes: 43800 # task times out in 1 month
+        inputs:
+           notifyUsers: |
+             kenneth_young501@live.com
+           instructions: 'Confirm development environment destruction.'
+           onTimeout: 'resume'
+
+  - deployment: destroyDev
+    displayName: Destroy Dev
+    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+    dependsOn: ['devDestructionApproval', 'deployDev']
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    environment: 'dev-$(app_name)'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+          - template: templates/destroy-infrastructure.yaml
+            parameters:
+              hclServiceConnection: "hcl-svc"
+              cspServiceConnection: "csp-svc"
+
+# - stage: Prod
+#   displayName: 'Deploy Prod'
+#   condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+#   dependsOn: []
+#   variables:
+#   - name: 'environment'
+#     value: 'prod'
+#   jobs:
+
+#   - job: prodApproval
+#     displayName: Wait for Manual Approval
+#     pool: server
+#     timeoutInMinutes: 43800
+#     steps:
+#       - task: ManualValidation@0
+#         timeoutInMinutes: 43800 # task times out in 1 month
+#         inputs:
+#            notifyUsers: |
+#              kenneth_young501@live.com
+#            instructions: 'Please validate the build configuration and resume'
+#            onTimeout: 'resume'
+
+#   - deployment: deployProd
+#     displayName: Deploy Prod
+#     dependsOn: prodApproval
+#     pool:
+#       vmImage: 'ubuntu-latest'
+
+#     environment: 'prod-$(app_name)'
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - checkout: self
+#           - template: templates/infrastructure-cd.yaml
+#             parameters:
+#               hclServiceConnection: "AWS Deployments"
+#               cspServiceConnection: "AWS Deployments SC"

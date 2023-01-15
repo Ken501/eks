@@ -1,0 +1,29 @@
+parameters: 
+- name: hclServiceConnection
+  type: string
+  default: ''
+- name: cspServiceConnection
+  type: string
+  default: ''
+
+steps:
+
+- task: TerraformTaskV3@3
+  displayName: 'Terraform Init'
+  inputs:
+    provider: 'aws'
+    command: 'init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/$(tf.path)'
+    commandOptions: '-var "region=$(region)" -var "app_name=$(app_name)" -var "environment=$(environment)"'
+    backendServiceAWS: ${{ parameters.hclServiceConnection }}
+    backendAWSBucketName: 'kmartinez-projects'
+    backendAWSKey: '$(environment)/$(app_name)/infrastructure/$(region).tfstate'
+  
+- task: TerraformTaskV3@3
+  displayName: 'Terraform Destroy'
+  inputs:
+    provider: 'aws'
+    command: 'destroy'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/$(tf.path)'
+    commandOptions: '-var "environment=$(environment)" -var "app_name=$(app_name)" -var "AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID)" -var "AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY)" -var "AWS_REGION=$(AWS_REGION)"'
+    environmentServiceNameAWS: ${{ parameters.hclServiceConnection }}
