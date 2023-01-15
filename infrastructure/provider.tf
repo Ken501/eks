@@ -15,11 +15,11 @@ provider "aws" {
 }
 
 provider "kubernetes" {
-  config_path    = "~/.kube/config"
-}
-
-resource "kubernetes_namespace" "namespace" {
-  metadata {
-    name = "${var.environment}-${var.app_name}-ns-${var.AWS_REGION}"
+  host                   = data.aws_eks_cluster.eks_cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks_cluster.certificate_authority[0].data)
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    args        = ["eks", "get-token", "--cluster-name", var.cluster_name]
+    command     = "aws"
   }
 }
