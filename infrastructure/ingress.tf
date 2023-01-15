@@ -1,20 +1,20 @@
 // Ingress Controller Class
-resource "kubernetes_ingress_class_v1" "ingress_controller" {
-  metadata {
-    name = "${var.environment}-${var.app_name}-ingress-controller"
-    annotations = {
-        "kubernetes.io/ingress.class" = "alb"
-    }
-  }
+# resource "kubernetes_ingress_class_v1" "ingress_controller" {
+#   metadata {
+#     name = "${var.environment}-${var.app_name}-ingress-controller"
+#     annotations = {
+#         "kubernetes.io/ingress.class" = "alb"
+#     }
+#   }
 
-  spec {
-    controller = "example.com/ingress-controller"
-    parameters {
-      kind      = "IngressParameters"
-      name      = "${var.environment}-${var.app_name}-external-alb-${var.AWS_REGION}"
-    }
-  }
-}
+#   spec {
+#     controller = "example.com/ingress-controller"
+#     parameters {
+#       kind      = "IngressParameters"
+#       name      = "${var.environment}-${var.app_name}-external-alb-${var.AWS_REGION}"
+#     }
+#   }
+# }
 
 resource "kubernetes_service_v1" "example" {
   metadata {
@@ -34,6 +34,9 @@ resource "kubernetes_ingress_v1" "example" {
   wait_for_load_balancer = false
   metadata {
     name = "example"
+    annotations = {
+        "kubernetes.io/ingress.class" = "alb"
+    }
   }
   spec {
     ingress_class_name = "${var.environment}-${var.app_name}-ingress-controller"
