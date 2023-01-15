@@ -36,7 +36,7 @@ resource "kubernetes_ingress_v1" "example" {
     name = "example"
   }
   spec {
-    ingress_class_name = "${var.environment}-${var.app_name}-ingress-controller"
+    ingress_class_name = "nginx"
     rule {
       http {
         path {
