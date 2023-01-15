@@ -72,6 +72,7 @@ resource "aws_subnet" "public01" {
   vpc_id     = aws_vpc.main.id
   cidr_block = local.public_subnets[0]
   availability_zone = local.az[0]
+  map_public_ip_on_launch = true
 
   tags = merge(
     var.additional_tags,
@@ -85,6 +86,7 @@ resource "aws_subnet" "public02" {
   vpc_id = aws_vpc.main.id
   cidr_block = local.public_subnets[1]
   availability_zone = local.az[1]
+  map_public_ip_on_launch = true
 
   tags = merge(
     var.additional_tags,
