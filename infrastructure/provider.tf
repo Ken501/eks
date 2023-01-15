@@ -13,3 +13,13 @@ provider "aws" {
   access_key = var.AWS_ACCESS_KEY_ID
   secret_key = var.AWS_SECRET_ACCESS_KEY
 }
+
+provider "kubernetes" {
+  config_path    = "~/.kube/config"
+}
+
+resource "kubernetes_namespace" "namespace" {
+  metadata {
+    name = "${var.environment}-${var.app_name}-ns-${var.AWS_REGION}"
+  }
+}
