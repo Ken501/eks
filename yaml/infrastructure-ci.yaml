@@ -17,8 +17,8 @@ trigger:
 
 variables:
 - group: 'aws-keys'
-- name: files.path
-  value: infrastructure
+# - name: files.path
+#   value: infrastructure
 - name: app_name
   value: 'k8s'
 - name: 'tf.path'
@@ -28,7 +28,7 @@ stages:
 
 - stage: Dev
   displayName: 'Deploy Dev'
-  condition: and(always(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   dependsOn: []
   variables:
   - name: 'environment'
@@ -53,7 +53,7 @@ stages:
 
   - job: devDestructionApproval
     displayName: Approve Dev Destruction
-    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     dependsOn: ['deployDev']
     pool: server
     timeoutInMinutes: 43800
@@ -68,7 +68,7 @@ stages:
 
   - deployment: destroyDev
     displayName: Destroy Dev
-    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     dependsOn: ['devDestructionApproval', 'deployDev']
     pool:
       vmImage: 'ubuntu-latest'

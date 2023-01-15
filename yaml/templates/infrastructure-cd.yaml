@@ -16,7 +16,7 @@ steps:
     workingDirectory: '$(System.DefaultWorkingDirectory)/$(tf.path)'
     commandOptions: '-var "region=$(region)" -var "app_name=$(app_name)" -var "environment=$(environment)"'
     backendServiceAWS: ${{ parameters.hclServiceConnection }}
-    backendAWSBucketName: 'kmartinez-projects'
+    backendAWSBucketName: '$(backend_bucket)'
     backendAWSKey: '$(environment)/$(app_name)/infrastructure/$(region).tfstate'
   
 - task: TerraformTaskV3@3
