@@ -1,0 +1,15 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: KubectlInstaller@0
+  inputs:
+    kubectlVersion: 'latest'
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'kubectl create -f k8s/aws-test.yaml'
