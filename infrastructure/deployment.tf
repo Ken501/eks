@@ -27,7 +27,7 @@ resource "kubernetes_deployment_v1" "nginx_deployment" {
 
       spec {
         container {
-          image = "nginx:1.21.6"
+          image = "nginx"
           name  = "${var.environment}-${var.app_name}-container"
 
           resources {
