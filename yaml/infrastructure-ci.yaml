@@ -16,7 +16,7 @@ trigger:
     - yaml
 
 variables:
-- group: 'deployment-keys'
+- group: 'aws-keys'
 - name: files.path
   value: infrastructure
 - name: app_name
