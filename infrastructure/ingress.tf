@@ -36,6 +36,7 @@ resource "kubernetes_ingress_v1" "example" {
     name = "example"
     annotations = {
         "kubernetes.io/ingress.class" = "alb"
+        "service.beta.kubernetes.io/aws-load-balancer-type" = "alb"
     }
   }
   spec {
