@@ -7,13 +7,13 @@ terraform {
   }
 }
 
-# Configure the AWS Provider
+// Configure the AWS Provider
 provider "aws" {
   region     = var.AWS_REGION
   access_key = var.AWS_ACCESS_KEY_ID
   secret_key = var.AWS_SECRET_ACCESS_KEY
 }
-
+// Configure the Kubernetes Provider
 provider "kubernetes" {
   host                   = data.aws_eks_cluster.eks_cluster.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks_cluster.certificate_authority[0].data)

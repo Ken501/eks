@@ -25,5 +25,5 @@ steps:
     provider: 'aws'
     command: 'apply'
     workingDirectory: '$(System.DefaultWorkingDirectory)/$(tf.path)'
-    commandOptions: '-var "environment=$(environment)" -var "app_name=$(app_name)" -var "AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID)" -var "AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY)" -var "AWS_REGION=$(AWS_REGION)"'
+    commandOptions: '-var "environment=$(environment)" -var "app_name=$(app_name)" -var "AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID)" -var "AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY)" -var "AWS_REGION=$(AWS_REGION)" -var "backend_bucket=$(backend_bucket)"'
     environmentServiceNameAWS: ${{ parameters.hclServiceConnection }}
