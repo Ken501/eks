@@ -1,6 +1,6 @@
 resource "kubernetes_service" "deploy_svc" {
   metadata {
-    name = "ingress-service"
+    name = "deploy-service"
   }
 
   spec {
@@ -21,7 +21,7 @@ resource "kubernetes_service" "deploy_svc" {
 resource "kubernetes_ingress" "deploy_ingress" {
   wait_for_load_balancer = false
   metadata {
-    name = "${var.environment}-${var.app_name}-deploy"
+    name = "deploy-ingress"
     annotations = {
       "alb.ingress.kubernetes.io/scheme" = "internet-facing"
       "alb.ingress.kubernetes.io/load-balancer-name" = "${var.environment}-${var.app_name}-alb-${var.AWS_REGION}"
@@ -33,7 +33,7 @@ resource "kubernetes_ingress" "deploy_ingress" {
         path {
           path = "/*"
           backend {
-            service_name = kubernetes_service.deploy_svc.metadata.0.name
+            service_name = "deploy-service" #kubernetes_service.deploy_svc.metadata.0.name
             service_port = 80
           }
         }
