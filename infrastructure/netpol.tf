@@ -6,12 +6,6 @@ resource "kubernetes_network_policy_v1" "netpol_policy" {
   }
 
   spec {
-    
-    match_labels = {
-        app = "${var.app_name}"
-        environment = "${var.environment}"
-    }
-
     pod_selector {
       match_expressions {
         key      = "app"
