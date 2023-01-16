@@ -1,17 +1,17 @@
 // Ingress Controller Class
-resource "kubernetes_ingress_class_v1" "ingress_class" {
-  metadata {
-    name = "${var.environment}-${var.app_name}-ingress-class"
-  }
+# resource "kubernetes_ingress_class_v1" "ingress_class" {
+#   metadata {
+#     name = "${var.environment}-${var.app_name}-ingress-class"
+#   }
 
-  spec {
-    controller = "aws-load-balancer-controller"
-    parameters {
-      kind      = "IngressParameters"
-      name      = "${var.environment}-${var.app_name}-external-alb-${var.AWS_REGION}"
-    }
-  }
-}
+#   spec {
+#     controller = "kmartinez.net/ingress-controller"
+#     parameters {
+#       kind      = "IngressParameters"
+#       name      = "${var.environment}-${var.app_name}-external-alb-${var.AWS_REGION}"
+#     }
+#   }
+# }
 
 resource "kubernetes_service_v1" "example" {
   metadata {
@@ -30,14 +30,10 @@ resource "kubernetes_service_v1" "example" {
 resource "kubernetes_ingress_v1" "example" {
   wait_for_load_balancer = false
   metadata {
-    name = "example"
-    annotations = {
-        "kubernetes.io/ingress.class" = "alb"
-        "service.beta.kubernetes.io/aws-load-balancer-type" = "alb"
-    }
+    name = "ingress-example"
   }
   spec {
-    ingress_class_name = "${var.environment}-${var.app_name}-ingress-class"
+    ingress_class_name = "nginx"
     rule {
       http {
         path {
@@ -56,12 +52,12 @@ resource "kubernetes_ingress_v1" "example" {
   }
 }
 
-# # Display load balancer hostname (typically present in AWS)
-# output "load_balancer_hostname" {
-#   value = kubernetes_ingress_v1.example.status.0.load_balancer.0.ingress.0.hostname
-# }
+# Display load balancer hostname (typically present in AWS)
+output "load_balancer_hostname" {
+  value = kubernetes_ingress_v1.example.status.0.load_balancer.0.ingress.0.hostname
+}
 
-# # Display load balancer IP (typically present in GCP, or using Nginx ingress controller)
-# output "load_balancer_ip" {
-#   value = kubernetes_ingress_v1.example.status.0.load_balancer.0.ingress.0.ip
-# }
+# Display load balancer IP (typically present in GCP, or using Nginx ingress controller)
+output "load_balancer_ip" {
+  value = kubernetes_ingress_v1.example.status.0.load_balancer.0.ingress.0.ip
+}
