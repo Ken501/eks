@@ -2,12 +2,7 @@ resource "kubernetes_service" "deploy_svc" {
   metadata {
     name = "ingress-service"
   }
-  spec {
-    selector = {
-        app = "${var.app_name}"
-        environment = "${var.environment}"
-    }
-  }
+
   spec {
     port {
       port        = 80
@@ -15,6 +10,11 @@ resource "kubernetes_service" "deploy_svc" {
       protocol    = "TCP"
     }
     type = "NodePort"
+
+    selector = {
+        app = "${var.app_name}"
+        environment = "${var.environment}"
+    }
   }
 }
 
@@ -44,10 +44,10 @@ resource "kubernetes_ingress" "deploy_ingress" {
 
 # Display load balancer hostname (typically present in AWS)
 output "load_balancer_hostname" {
-  value = kubernetes_ingress.example.status.0.load_balancer.0.ingress.0.hostname
+  value = kubernetes_ingress.deploy_ingress.status.0.load_balancer.0.ingress.0.hostname
 }
 
 # Display load balancer IP (typically present in GCP, or using Nginx ingress controller)
 output "load_balancer_ip" {
-  value = kubernetes_ingress.example.status.0.load_balancer.0.ingress.0.ip
+  value = kubernetes_ingress.deploy_ingress.status.0.load_balancer.0.ingress.0.ip
 }
