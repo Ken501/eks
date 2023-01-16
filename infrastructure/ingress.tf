@@ -18,29 +18,65 @@ resource "kubernetes_service" "deploy_svc" {
   }
 }
 
-resource "kubernetes_ingress" "deploy_ingress" {
-  wait_for_load_balancer = false
+resource "kubernetes_ingress_v1" "example_ingress" {
   metadata {
     name = "deploy-ingress"
-    annotations = {
-      "alb.ingress.kubernetes.io/scheme" = "internet-facing"
-      "alb.ingress.kubernetes.io/load-balancer-name" = "${var.environment}-${var.app_name}-alb-${var.AWS_REGION}"
-    }
   }
+
   spec {
-    rule {
-      http {
-        path {
-          path = "/*"
-          backend {
-            service_name = "deploy-service" #kubernetes_service.deploy_svc.metadata.0.name
-            service_port = 80
-          }
+    default_backend {
+      service {
+        name = "dev-k8s-deploy"
+        port {
+          number = 80
         }
       }
     }
+
+    rule {
+      http {
+        path {
+          backend {
+            service {
+              name = "dev-k8s-deploy"
+              port {
+                number = 80
+              }
+            }
+          }
+
+          path = "/"
+        }
+
+}
+    }
   }
 }
+
+
+# resource "kubernetes_ingress" "deploy_ingress" {
+#   wait_for_load_balancer = false
+#   metadata {
+#     name = "deploy-ingress"
+#     annotations = {
+#       "alb.ingress.kubernetes.io/scheme" = "internet-facing"
+#       "alb.ingress.kubernetes.io/load-balancer-name" = "${var.environment}-${var.app_name}-alb-${var.AWS_REGION}"
+#     }
+#   }
+#   spec {
+#     rule {
+#       http {
+#         path {
+#           path = "/*"
+#           backend {
+#             service_name = "deploy-service" #kubernetes_service.deploy_svc.metadata.0.name
+#             service_port = 80
+#           }
+#         }
+#       }
+#     }
+#   }
+# }
 
 # Display load balancer hostname (typically present in AWS)
 output "load_balancer_hostname" {
