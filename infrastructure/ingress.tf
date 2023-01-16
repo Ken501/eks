@@ -1,6 +1,7 @@
-resource "kubernetes_service_v1" "example" {
+resource "kubernetes_service_v1" "nginx_service" {
   metadata {
-    name = "ingress-service"
+    name = "${var.environment}-${var.app_name}-nginx-svc"
+    namespace = "${var.environment}-${var.app_name}-ns-${var.AWS_REGION}"
   }
   spec {
     port {
@@ -16,10 +17,11 @@ resource "kubernetes_service_v1" "example" {
   }
 }
 
-resource "kubernetes_ingress_v1" "example" {
+resource "kubernetes_ingress_v1" "nginx_ingress" {
   wait_for_load_balancer = true
   metadata {
     name = "example"
+    namespace = "${var.environment}-${var.app_name}-ns-${var.AWS_REGION}"
     annotations = {
       "alb.ingress.kubernetes.io/scheme" = "internet-facing"
       "alb.ingress.kubernetes.io/load-balancer-name" = "${var.environment}-${var.app_name}-alb-${var.AWS_REGION}"
@@ -33,7 +35,7 @@ resource "kubernetes_ingress_v1" "example" {
           path = "/*"
           backend {
             service {
-              name = kubernetes_service_v1.example.metadata.0.name
+              name = kubernetes_service_v1.nginx_service.metadata.0.name
               port {
                 number = 80
               }
@@ -43,14 +45,4 @@ resource "kubernetes_ingress_v1" "example" {
       }
     }
   }
-}
-
-# Display load balancer hostname (typically present in AWS)
-output "load_balancer_hostname" {
-  value = kubernetes_ingress_v1.example.status.0.load_balancer.0.ingress.0.hostname
-}
-
-# Display load balancer IP (typically present in GCP, or using Nginx ingress controller)
-output "load_balancer_ip" {
-  value = kubernetes_ingress_v1.example.status.0.load_balancer.0.ingress.0.ip
 }

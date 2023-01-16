@@ -5,6 +5,7 @@ resource "kubernetes_deployment_v1" "nginx_deployment" {
       app = "${var.app_name}"
       env = "${var.environment}"
     }
+    namespace = "${var.environment}-${var.app_name}-ns-${var.AWS_REGION}"
   }
 
   spec {
