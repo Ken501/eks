@@ -1,8 +1,7 @@
-resource "kubernetes_service" "deploy_svc" {
+resource "kubernetes_service_v1" "example" {
   metadata {
-    name = "deploy-service"
+    name = "ingress-service"
   }
-
   spec {
     port {
       port        = 80
@@ -10,86 +9,33 @@ resource "kubernetes_service" "deploy_svc" {
       protocol    = "TCP"
     }
     type = "NodePort"
-
-    selector = {
-        app = "${var.app_name}"
-        environment = "${var.environment}"
+    label {
+        selector = {
+            app = "${var.app_name}"
+            environment = "${var.environment}"
+        }
     }
   }
 }
 
-# resource "kubernetes_ingress_v1" "example_ingress" {
-#   metadata {
-#     name = "deploy-ingress"
-#     annotations = {
-#       "alb.ingress.kubernetes.io/scheme" = "internet-facing"
-#       "alb.ingress.kubernetes.io/load-balancer-name" = "${var.environment}-${var.app_name}-alb-${var.AWS_REGION}"
-#     }
-#   }
-
-#   spec {
-#     default_backend {
-#       service {
-#         name = "deploy-service"
-#         port {
-#           number = 80
-#         }
-#       }
-#     }
-
-#     rule {
-#       http {
-#         path {
-#           backend {
-#             service {
-#               name = "deploy-service"
-#               port {
-#                 number = 80
-#               }
-#             }
-#           }
-
-#           path = "/"
-#         }
-
-# }
-#     }
-#   }
-# }
-
-resource "kubernetes_ingress_class_v1" "ingress_class" {
+resource "kubernetes_ingress_v1" "example" {
+  wait_for_load_balancer = true
   metadata {
-    name = "ingress-class"
-  }
-
-  spec {
-    controller = "kmartinez.com/ingress-controller"
-    parameters {
-      api_group = "k8s.kmartinez.com"
-      kind      = "IngressParameters"
-      name      = "external-lb"
-    }
-  }
-}
-
-
-resource "kubernetes_ingress" "deploy_ingress" {
-  wait_for_load_balancer = false
-  metadata {
-    name = "deploy-ingress"
-    # annotations = {
-    #   "alb.ingress.kubernetes.io/scheme" = "internet-facing"
-    #   "alb.ingress.kubernetes.io/load-balancer-name" = "${var.environment}-${var.app_name}-alb-${var.AWS_REGION}"
-    # }
+    name = "example"
   }
   spec {
+    ingress_class_name = "alb"
     rule {
       http {
         path {
-          path = "/"
+          path = "/*"
           backend {
-            service_name = kubernetes_service.deploy_svc.metadata.0.name
-            service_port = 80
+            service {
+              name = kubernetes_service_v1.example.metadata.0.name
+              port {
+                number = 80
+              }
+            }
           }
         }
       }
@@ -97,12 +43,12 @@ resource "kubernetes_ingress" "deploy_ingress" {
   }
 }
 
-#Display load balancer hostname (typically present in AWS)
+# Display load balancer hostname (typically present in AWS)
 output "load_balancer_hostname" {
-  value = kubernetes_ingress.deploy_ingress.status.0.load_balancer.0.ingress.0.hostname
+  value = kubernetes_ingress_v1.example.status.0.load_balancer.0.ingress.0.hostname
 }
 
 # Display load balancer IP (typically present in GCP, or using Nginx ingress controller)
 output "load_balancer_ip" {
-  value = kubernetes_ingress.deploy_ingress.status.0.load_balancer.0.ingress.0.ip
+  value = kubernetes_ingress_v1.example.status.0.load_balancer.0.ingress.0.ip
 }
