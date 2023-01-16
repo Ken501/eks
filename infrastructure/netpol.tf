@@ -1,11 +1,17 @@
 // Network Policy Object
-resource "kubernetes_network_policy_v1" "example" {
+resource "kubernetes_network_policy_v1" "netpol_policy" {
   metadata {
     name      = "${var.environment}-${var.app_name}-netpol-${var.AWS_REGION}"
     namespace = "${var.environment}-${var.app_name}-ns-${var.AWS_REGION}"
   }
 
   spec {
+    
+    match_labels = {
+        app = "${var.app_name}"
+        environment = "${var.environment}"
+    }
+
     pod_selector {
       match_expressions {
         key      = "app"
@@ -15,10 +21,10 @@ resource "kubernetes_network_policy_v1" "example" {
     }
 
     ingress {
-    #   ports {
-    #     port     = "http"
-    #     protocol = "TCP"
-    #   }
+      ports {
+        port     = "http"
+        protocol = "TCP"
+      }
       ports {
         port     = "22"
         protocol = "TCP"
