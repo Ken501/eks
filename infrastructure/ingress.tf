@@ -53,6 +53,20 @@ resource "kubernetes_ingress_v1" "example_ingress" {
   }
 }
 
+# resource "kubernetes_ingress_class_v1" "alb_class" {
+#   metadata {
+#     name = "alb"
+#   }
+
+#   spec {
+#     controller = "example.com/aws-load-balancer-controller"
+#     parameters {
+#       kind      = "IngressParameters"
+#       name      = "external-lb"
+#     }
+#   }
+# }
+
 
 # resource "kubernetes_ingress" "deploy_ingress" {
 #   wait_for_load_balancer = false
