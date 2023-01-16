@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.14.2
+        image: nginx
         ports:
         - name: web
           containerPort: 80
@@ -30,29 +30,29 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ngix-svc
+  name: nginx-svc
 spec:
   ports:
   - protocol: TCP
     port: 80
-    targetPort: web
+    targetPort: 80
   type: NodePort
   selector:
     app: nginx
 ---
 apiVersion: networking.k8s.io/v1
-kind: ingress
+kind: Ingress
 metadata:
-  name: nginx-ingress
+  name: minimal-ingress
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
 spec:
-  ingressClassName: nginx-ingress-class
+  ingressClassName: alb
   rules:
   - http:
       paths:
       - path: /
-        pathType: Exact
+        pathType: Prefix
         backend:
           service:
             name: nginx-svc

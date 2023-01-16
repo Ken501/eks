@@ -15,6 +15,7 @@ trigger:
     - code
     - yaml
     - k8s
+    - charts
 
 variables:
 - group: 'aws-keys'
