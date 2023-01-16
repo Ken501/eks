@@ -9,7 +9,7 @@ resource "kubernetes_network_policy_v1" "example" {
     pod_selector {
       match_expressions {
         key      = "app"
-        operator = "In"
+        operator = "Equal"
         values   = ["${var.app_name}"]
       }
     }
