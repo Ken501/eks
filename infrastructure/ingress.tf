@@ -9,11 +9,9 @@ resource "kubernetes_service_v1" "example" {
       protocol    = "TCP"
     }
     type = "NodePort"
-    label {
-        selector = {
-            app = "${var.app_name}"
-            environment = "${var.environment}"
-        }
+    selector = {
+        app = "${var.app_name}"
+        environment = "${var.environment}"
     }
   }
 }
