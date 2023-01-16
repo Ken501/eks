@@ -26,7 +26,7 @@ resource "kubernetes_ingress_v1" "example_ingress" {
   spec {
     default_backend {
       service {
-        name = "dev-k8s-deploy"
+        name = "deploy-service"
         port {
           number = 80
         }
@@ -38,7 +38,7 @@ resource "kubernetes_ingress_v1" "example_ingress" {
         path {
           backend {
             service {
-              name = "dev-k8s-deploy"
+              name = "deploy-service"
               port {
                 number = 80
               }
