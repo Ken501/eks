@@ -21,7 +21,7 @@ resource "kubernetes_service" "deploy_svc" {
 resource "kubernetes_ingress" "deploy_ingress" {
   wait_for_load_balancer = false
   metadata {
-    name = "example"
+    name = "ingress-service"
     annotations = {
       "alb.ingress.kubernetes.io/scheme" = "internet-facing"
       "alb.ingress.kubernetes.io/load-balancer-name" = "${var.environment}-${var.app_name}-alb-${var.AWS_REGION}"
