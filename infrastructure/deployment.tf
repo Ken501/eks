@@ -1,6 +1,7 @@
+// Nginx Deployment
 resource "kubernetes_deployment_v1" "nginx_deployment" {
   metadata {
-    name = "${var.environment}-${var.app_name}-deploy"
+    name = "${var.environment}-${var.app_name}-nginx-deploy"
     labels = {
       app = "${var.app_name}"
       env = "${var.environment}"
@@ -29,7 +30,7 @@ resource "kubernetes_deployment_v1" "nginx_deployment" {
       spec {
         container {
           image = "nginx"
-          name  = "${var.environment}-${var.app_name}-container"
+          name  = "${var.environment}-${var.app_name}-nginx-container"
 
           resources {
             limits = {

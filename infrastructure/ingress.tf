@@ -1,3 +1,4 @@
+// Nginx Service
 resource "kubernetes_service_v1" "nginx_service" {
   metadata {
     name = "${var.environment}-${var.app_name}-nginx-svc"
@@ -17,10 +18,11 @@ resource "kubernetes_service_v1" "nginx_service" {
   }
 }
 
+// Nginx ingress
 resource "kubernetes_ingress_v1" "nginx_ingress" {
   wait_for_load_balancer = true
   metadata {
-    name = "example"
+    name = "${var.environment}-${var.app_name}-nginx-ingress"
     namespace = "${var.environment}-${var.app_name}-ns-${var.AWS_REGION}"
     annotations = {
       "alb.ingress.kubernetes.io/scheme" = "internet-facing"
