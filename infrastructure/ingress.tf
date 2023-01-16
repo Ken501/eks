@@ -1,6 +1,10 @@
 resource "kubernetes_service" "deploy_svc" {
   metadata {
     name = "deploy-service"
+    annotations = {
+      "alb.ingress.kubernetes.io/scheme" = "internet-facing"
+      "alb.ingress.kubernetes.io/load-balancer-name" = "${var.environment}-${var.app_name}-alb-${var.AWS_REGION}"
+    }
   }
 
   spec {
