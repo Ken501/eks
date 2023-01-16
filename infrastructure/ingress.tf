@@ -20,6 +20,10 @@ resource "kubernetes_ingress_v1" "example" {
   wait_for_load_balancer = true
   metadata {
     name = "example"
+    annotations = {
+      "alb.ingress.kubernetes.io/scheme" = "internet-facing"
+      "alb.ingress.kubernetes.io/load-balancer-name" = "${var.environment}-${var.app_name}-alb-${var.AWS_REGION}"
+    }
   }
   spec {
     ingress_class_name = "alb"
