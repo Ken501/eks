@@ -15,10 +15,10 @@ resource "kubernetes_network_policy_v1" "example" {
     }
 
     ingress {
-      ports {
-        port     = "https"
-        protocol = "TCP"
-      }
+    #   ports {
+    #     port     = "http"
+    #     protocol = "TCP"
+    #   }
       ports {
         port     = "22"
         protocol = "TCP"
