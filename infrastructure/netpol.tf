@@ -16,7 +16,7 @@ resource "kubernetes_network_policy_v1" "example" {
 
     ingress {
       ports {
-        port     = "http"
+        port     = "https"
         protocol = "TCP"
       }
       ports {
