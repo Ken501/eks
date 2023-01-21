@@ -122,40 +122,39 @@ kubectl expose <api-resource> --name=http-svc --port=80 --type=NodePort
 # Directory Tree Structure
 
 ```
-│   .gitignore
-│   README.md
-│
-├───.attachments
-│       monkey.gif
-│
-├───infrastructure
-│   │   backend.tf
-│   │   cluster.tf
-│   │   data.tf
-│   │   deployment.tf
-│   │   global-vars.tf
-│   │   iam-test.tf
-│   │   iam.tf
-│   │   ingress-controller.tf
-│   │   ingress.tf
-│   │   locals.tf
-│   │   netpol.tf
-│   │   oidc.tf
-│   │   output.tf
-│   │   provider.tf
-│   │   variables.tf
-│   │
-│   ├───policies
-│   │       AWSLoadBalancerController.json
-│   │
-│   └───scripts
-│           user-data.sh
-│
-└───yaml
-    │   infrastructure-ci.yaml
-    │
-    └───templates
-            infrastructure-cd.yml
+.
+├── LICENSE
+├── README.md
+├── infrastructure
+│   ├── addons.tf
+│   ├── backend.tf
+│   ├── cluster.tf
+│   ├── data.tf
+│   ├── iam-test.tf
+│   ├── iam.tf
+│   ├── ingress-controller.tf
+│   ├── locals.tf
+│   ├── oidc.tf
+│   ├── output.tf
+│   ├── policies
+│   │   └── AWSLoadBalancerController.json
+│   ├── provider.tf
+│   ├── scripts
+│   │   └── user-data.sh
+│   ├── variables.tf
+│   └── vpc.tf
+├── test_manifests
+│   ├── aws-test.yaml
+│   ├── deployment.yaml
+│   ├── nginx-deploy.yaml
+│   ├── private-lb.yaml
+│   └── public-lb.yaml
+└── yaml
+    ├── infrastructure-ci.yaml
+    ├── manifests-cd.yaml
+    └── templates
+        ├── destroy-infrastructure.yaml
+        └── infrastructure-cd.yaml
 ```
 
 # Terraform Resources
