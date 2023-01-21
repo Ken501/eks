@@ -8,8 +8,12 @@ Repository for aws elastic kubernetes service project. Infrastructure terraform 
 
 <!-- Dir Summary -->
 # Directory Guide
+* .attachments
+  * Contains images and other miscellaneous for project
 * Infrastructure
     * Stores Terraform configuration files
+* test_manifests
+  * Local yaml manifest files with starter deployments and services for testig cluster.
 * yaml
     * Stores Microsoft Azure Devops Services CI/CD pipeline configuration files in yaml format
 
