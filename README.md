@@ -18,6 +18,8 @@ Repository for aws elastic kubernetes service project. Infrastructure terraform 
   * Instructions: https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html
 * Install kubectl version **1.23.5**
   * Instructions: https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/
+* Intall latest version of aws cli
+  * https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 
 # AWS IAM and Cluster Auth Instructions:
 * Links:
