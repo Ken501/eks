@@ -36,3 +36,22 @@ variable "additional_tags" {
 variable "backend_bucket" {
   description = "Terraform backend bucket name"
 }
+
+// Cluster variables
+variable "kubernetes_version" {
+  description = "Kubernetes version"
+  type = string
+  default = "1.24"
+}
+
+variable "ingress_controller_version" {
+  description = "AWS Ingress controller version"
+  type = string
+  default = "1.4.1"
+}
+
+variable "coredns_addon_version" {
+  description = "CoreDNS Cluster CNI addon version"
+  type = string
+  default = "v1.8.7-eksbuild.3"
+}

@@ -46,6 +46,11 @@ metadata:
   name: minimal-ingress
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/load-balancer-name: test-nginx-internal-alb
+    alb.ingress.kubernetes.io/load-balancer-attributes: deletion_protection.enabled=false
+    alb.ingress.kubernetes.io/tags: Environment=dev,app=nginx
+    alb.ingress.kubernetes.io/ip-address-type: ipv4
+    alb.ingress.kubernetes.io/listen-ports:  '[{"HTTP": 80}]'
 spec:
   ingressClassName: alb
   rules:
