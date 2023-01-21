@@ -72,7 +72,7 @@ aws eks update-kubeconfig \
 source <(kubectl completion bash)
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 ```
-#kubectl shorthand
+# kubectl shorthand
 ```
 alias k=kubectl
 complete -o default -F __start_kubectl k
