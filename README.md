@@ -11,7 +11,7 @@ Repository for aws elastic kubernetes service project. Infrastructure terraform 
 * Infrastructure
     * Stores Terraform configuration files
 * yaml
-    * Stores CI/CD pipeline configuration files in yaml format
+    * Stores Microsoft Azure Devops Services CI/CD pipeline configuration files in yaml format
 
 # Before Proceeding make sure to install the following:
 * Install **latest** version of AWS eksctl
