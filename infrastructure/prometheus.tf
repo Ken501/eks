@@ -22,17 +22,17 @@ resource "helm_release" "prometheus" {
 
   set {
     name  = "kube-state-metrics.enabled"
-    value = false
+    value = true
   }
 
   set {
     name  = "prometheus-node-exporter.enabled"
-    value = false
+    value = true
   }
 
   set {
     name  = "prometheus-pushgateway.enabled"
-    value = false
+    value = true
   }
 
 }
