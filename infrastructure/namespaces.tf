@@ -8,6 +8,6 @@ resource "kubernetes_namespace" "app_namespace" {
 
 resource "kubernetes_namespace" "prometheus_namespace" {
   metadata {
-    name = "prometheus"
+    name = "monitoring"
   }
 }

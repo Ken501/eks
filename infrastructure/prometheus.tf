@@ -1,7 +1,7 @@
 resource "helm_release" "prometheus" {
   chart      = "prometheus"
   name       = "prometheus"
-  namespace  = "prometheus"
+  namespace  = "monitoring"
   repository = "https://prometheus-community.github.io/helm-charts"
   version    = "19.0.0"
 
