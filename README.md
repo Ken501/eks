@@ -54,6 +54,10 @@ eksctl get iamidentitymapping \
 --profile <aws-profile>
 ```
 
+## To deploy eks cluster autoscaler replace role arn for autoscaler and cluster name for node group tags within test_manifests/eks-autoscaler.yaml
+* Documentation:
+  * https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html
+
 <!-- kubeconfig commands -->
 # KubeConfig
 * To interact with a cluster configure the local kubeconfig by running the following command:
