@@ -6,7 +6,7 @@ resource "kubernetes_namespace" "app_namespace" {
   }
 }
 
-resource "kubernetes_namespace" "prometheus_namespace" {
+resource "kubernetes_namespace" "monitoring_namespace" {
   metadata {
     name = "monitoring"
   }
