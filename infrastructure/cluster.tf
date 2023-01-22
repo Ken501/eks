@@ -6,6 +6,7 @@ resource "aws_eks_cluster" "eks_cluster" {
 
   vpc_config {
     subnet_ids = local.public_subnet_ids[*]
+    endpoint_private_access = true
   }
 
   depends_on = [
