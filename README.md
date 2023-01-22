@@ -1,6 +1,7 @@
 <!-- Logos -->
 <!-- ![Tomcat image](/.attachments/tomcat-logo.png =250x200) -->
 ![Monkey Typing](/.attachments/monkey.gif)
+![Architecture diagram](/.attachments/eks-project.drawio)
 
 <!-- Intro -->
 # Introduction
