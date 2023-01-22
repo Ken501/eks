@@ -44,11 +44,3 @@ resource "aws_eks_node_group" "node_group" {
     aws_iam_role_policy_attachment.AmazonEC2ContainerRegistryReadOnly,
   ]
 }
-
-// NameSpaces
-
-resource "kubernetes_namespace" "namespace" {
-  metadata {
-    name = "${var.environment}-${var.app_name}-ns-${var.AWS_REGION}"
-  }
-}
