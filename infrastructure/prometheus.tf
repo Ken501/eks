@@ -16,16 +16,23 @@ resource "helm_release" "prometheus" {
   }
 
   set {
-    name = "server\\.resources"
-    value = yamlencode({
-      limits = {
-        cpu    = "200m"
-        memory = "50Mi"
-      }
-      requests = {
-        cpu    = "100m"
-        memory = "30Mi"
-      }
-    })
+    name  = "alertmanager.enabled"
+    value = false
   }
+
+  set {
+    name  = "kube-state-metrics.enabled"
+    value = false
+  }
+
+  set {
+    name  = "prometheus-node-exporter.enabled"
+    value = false
+  }
+
+  set {
+    name  = "prometheus-pushgateway.enabled"
+    value = false
+  }
+
 }
