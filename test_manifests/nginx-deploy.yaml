@@ -46,7 +46,7 @@ metadata:
   name: nginx-ingress
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/load-balancer-name: dev-nginx-external-alb
+    alb.ingress.kubernetes.io/load-balancer-name: nginx-external-alb
     alb.ingress.kubernetes.io/load-balancer-attributes: deletion_protection.enabled=false
     alb.ingress.kubernetes.io/tags: Environment=dev,app=nginx
     alb.ingress.kubernetes.io/ip-address-type: ipv4
