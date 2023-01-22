@@ -55,6 +55,7 @@ eksctl get iamidentitymapping \
 ```
 
 ## To deploy eks cluster autoscaler replace role arn for autoscaler and cluster name for node group tags within test_manifests/eks-autoscaler.yaml
+* An IAM role has already been created for eks cluster autoscaler. Refer to infrastructure/iam.tf
 * Documentation:
   * https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html
 
