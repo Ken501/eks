@@ -92,6 +92,9 @@ complete -o default -F __start_kubectl k
   * https://bitnami.com/stacks/helm
   * https://github.com/bitnami/charts
   * https://helm.sh/docs/intro/install/
+* AWS Autoscaler documentation:
+  * https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html
+  * https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/README.md
 
 # Cheat Sheet
 * Describe cluster resource

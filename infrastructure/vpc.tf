@@ -76,7 +76,7 @@ resource "aws_subnet" "public01" {
 
   tags = {
    "Name" = "${var.app_name}-Public-1"
-   "kubernetes.io/cluster/${local.cluster_name}" = "owned"
+   "kubernetes.io/cluster/${aws_eks_cluster.eks_cluster.name}" = "owned"
    "kubernetes.io/role/elb" = "1"
   }
 }
@@ -89,7 +89,7 @@ resource "aws_subnet" "public02" {
 
   tags = {
    "Name" = "${var.app_name}-Public-2"
-   "kubernetes.io/cluster/${local.cluster_name}" = "owned"
+   "kubernetes.io/cluster/${aws_eks_cluster.eks_cluster.name}" = "owned"
    "kubernetes.io/role/elb" = "1"
   }
 }
@@ -103,7 +103,7 @@ resource "aws_subnet" "private01" {
 
   tags = {
    "Name" = "${var.app_name}-Private-1"
-   "kubernetes.io/cluster/${local.cluster_name}" = "owned"
+   "kubernetes.io/cluster/${aws_eks_cluster.eks_cluster.name}" = "owned"
    "kubernetes.io/role/internal-elb" = "1"
   }
 }
@@ -115,7 +115,7 @@ resource "aws_subnet" "private02" {
 
   tags = {
    "Name" = "${var.app_name}-Private-2"
-   "kubernetes.io/cluster/${local.cluster_name}" = "owned"
+   "kubernetes.io/cluster/${aws_eks_cluster.eks_cluster.name}" = "owned"
    "kubernetes.io/role/internal-elb" = "1"
   }
 }
