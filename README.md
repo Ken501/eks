@@ -1,7 +1,6 @@
 <!-- Logos -->
 <!-- ![Tomcat image](/.attachments/tomcat-logo.png =250x200) -->
 ![Monkey Typing](/.attachments/monkey.gif)
-![Architecture diagram](/.attachments/eks-project.png)
 
 <!-- Intro -->
 # Introduction
@@ -9,6 +8,9 @@ Repository for aws elastic kubernetes service project. Infrastructure terraform 
 
 # CI/CD
 A yaml configuration file is included that is compatible with Microsoft Azure DevOps platform. The pipeline configuration runs a development pipeline that only triggers with branches that are not equal to main and a production branch that triggers when a merge occurs.
+
+# Infrastructure diagram:
+![Architecture diagram](/.attachments/eks-project.png)
 
 <!-- Dir Summary -->
 # Directory Guide
