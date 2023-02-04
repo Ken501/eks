@@ -181,7 +181,6 @@ resource "aws_iam_policy" "eks_worknode_ebs_policy" {
 }
 POLICY
 }
-# And attach the new policy
 resource "aws_iam_role_policy_attachment" "worknode-AmazonEBSCSIDriver" {
   policy_arn = aws_iam_policy.eks_worknode_ebs_policy.arn
   role       = aws_iam_role.node_role.name
