@@ -13,7 +13,7 @@ serviceName:
 ingressName:
   name: nginx-ingress
 
-replicaCount: 1
+replicaCount: 2
 
 image:
   repository: nginx
