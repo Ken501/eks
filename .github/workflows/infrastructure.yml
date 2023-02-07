@@ -18,6 +18,8 @@ jobs:
           echo "Hello World 2!"
       - name: Print Goodbye
         run: echo "Done - bye!"
+      - name: List directory
+        run: ls -la
 
   # second-job:
   #   runs-on: ubuntu-latest
