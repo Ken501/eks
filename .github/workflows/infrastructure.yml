@@ -9,7 +9,7 @@ on:
     paths:
       - 'infrastructure/**'
 jobs: 
-  first-job:
+  devDeployment:
     runs-on: ubuntu-latest
     steps:
       - name: Print greeting
