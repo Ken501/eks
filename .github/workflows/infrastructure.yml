@@ -1,5 +1,13 @@
 name: First workflow
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - 'master'
+      - 'feature/**'
+      - 'hotfix/**'
+      - 'bug/**'
+    paths:
+      - 'infrastructure/**'
 jobs: 
   first-job:
     runs-on: ubuntu-latest
@@ -11,10 +19,10 @@ jobs:
       - name: Print Goodbye
         run: echo "Done - bye!"
 
-  second-job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print greeting
-        run: echo "Hello World"
-      - name: Print Goodbye
-        run: echo "Done - bye!"
+  # second-job:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Print greeting
+  #       run: echo "Hello World"
+  #     - name: Print Goodbye
+  #       run: echo "Done - bye!"
