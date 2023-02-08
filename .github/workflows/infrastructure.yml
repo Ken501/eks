@@ -13,24 +13,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print greeting
-        run: |
-          echo "Hello World"
-          echo "Hello World 2!"
-      - name: Print Goodbye
-        run: echo "Done - bye!"
+        run: echo "Hello World"
       - name: Code checkout
         uses: actions/checkout@v3
       - name: List directory
-        run: ls -la
-      - name: Test Binaries
         run: |
-          terraform --version
-          aws --version
-      - name: Terraform Init and Plan
-        run: |
-          cd infrastructure/
-          terraform init
-          terraform plan
+          ls -la
+          ls -la -R
+      # - name: Terraform Init and Plan
+      #   run: |
+      #     cd infrastructure/
+      #     terraform init
+      #     terraform plan
 
   Deploy:
     needs: Test
