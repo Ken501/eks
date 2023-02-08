@@ -1,6 +1,6 @@
 // EKS cluster IAM role
 resource "aws_iam_role" "cluster_role" {
-  name = "${var.environment}-${var.app_name}-cluster-role-${var.AWS_REGION}"
+  name = "cluster_role" #"${var.environment}-${var.app_name}-cluster-role-${var.AWS_REGION}"
 
   assume_role_policy = <<POLICY
 {
@@ -30,7 +30,7 @@ resource "aws_iam_role_policy_attachment" "AmazonEKSVPCResourceController" {
 
 // Node Group IAM role
 resource "aws_iam_role" "node_role" {
-  name = "${var.environment}-${var.app_name}-cluster-node-${var.AWS_REGION}"
+  name = "node_role" #"${var.environment}-${var.app_name}-cluster-node-${var.AWS_REGION}"
 
   assume_role_policy = jsonencode({
     Statement = [{
