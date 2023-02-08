@@ -23,12 +23,10 @@ jobs:
       - name: Verify terraform version
         run: terraform --version
       - name: Terraform Init and Plan
-        run: echo ${{ vars.APP_NAME }}
-      # - name: Terraform Init and Plan
-      #   run: |
-      #     cd infrastructure/
-      #     terraform init -var "region=${{ env.AWS_REGION }}" -var "app_name=${{ env.APP_NAME }}" -var "environment=${{ env.ENVIRONMENT }}"
-      #     terraform plan
+        run: |
+          cd infrastructure/
+          terraform init -var "region=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}"
+          terraform plan
   Deploy:
     needs: Test
     runs-on: ubuntu-latest
