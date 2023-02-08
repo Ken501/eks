@@ -8,6 +8,10 @@ on:
       - 'bug/**'
     # paths:
     #   - 'infrastructure/**'
+env:
+  AWS_REGION: us-east-1
+  APP_NAME: k8s
+  ENVIRONMENT: dev
 jobs: 
   Test:
     runs-on: ubuntu-latest
@@ -22,11 +26,11 @@ jobs:
           ls -la -R
       - name: Verify terraform version
         run: terraform --version
-      # - name: Terraform Init and Plan
-      #   run: |
-      #     cd infrastructure/
-      #     # terraform init -var "region=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}"
-      #     terraform plan
+      - name: Terraform Init and Plan
+        run: |
+          cd infrastructure/
+          # terraform init -var "region=$AWS_REGION" -var "app_name=$APP_NAME" -var "environment=$ENVIRONMENT"
+          terraform plan
   Deploy:
     needs: Test
     runs-on: ubuntu-latest
