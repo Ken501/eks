@@ -34,6 +34,7 @@ variable "additional_tags" {
 // Backend variables
 
 variable "backend_bucket" {
+  default     = "kmartinez-projects"
   description = "Terraform backend bucket name"
 }
 
