@@ -29,8 +29,7 @@ jobs:
       - name: Terraform Init and Plan
         run: |
           cd infrastructure/
-          #terraform init -var "region=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}"
-          terraform init -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          terraform init -var "region=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}" -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           terraform plan
   Deploy:
     needs: Test
