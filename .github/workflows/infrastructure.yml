@@ -9,7 +9,7 @@ on:
     # paths:
     #   - 'infrastructure/**'
 jobs: 
-  devDeployment:
+  Test:
     runs-on: ubuntu-latest
     steps:
       - name: Print greeting
@@ -26,8 +26,13 @@ jobs:
         run: |
           terraform --version
           aws --version
+      - name: Terraform Init and Plan
+        run: |
+          cd infrastructure/
+          terraform init
+          terraform plan
 
-  second-job:
+  Deploy:
     needs: devDeployment
     runs-on: ubuntu-latest
     steps:
