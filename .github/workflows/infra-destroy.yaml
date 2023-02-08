@@ -1,0 +1,15 @@
+name: Destroy Dev Infrastructure
+on:
+  workflow_dispatch
+jobs:
+  Destroy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+      - name: Terraform Init and Destroy
+        run: |
+          cd infrastructure/
+          ls -la
+          terraform init -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          terraform destroy -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var "AWS_REGION=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}" -auto-approve
