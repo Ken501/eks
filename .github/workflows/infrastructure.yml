@@ -30,7 +30,7 @@ jobs:
         run: |
           cd infrastructure/
           ls -la
-          terraform format
+          terraform fmt
           terraform init -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           terraform plan -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var "AWS_REGION=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}"
   Deploy:
