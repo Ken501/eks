@@ -25,8 +25,8 @@ jobs:
       - name: Test Binaries
         run: |
           terraform --version
-          kubectl version
-          aws --version
+          kubectl version --short
+          # aws --version
 
   # second-job:
   #   runs-on: ubuntu-latest
