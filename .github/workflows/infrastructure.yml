@@ -26,7 +26,6 @@ jobs:
         run: |
           terraform --version
           kubectl version
-          helm version
           aws --version
 
   # second-job:
