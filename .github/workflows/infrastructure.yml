@@ -29,7 +29,7 @@ jobs:
       - name: Terraform Init and Plan
         run: |
           cd infrastructure/
-          # terraform init -var "region=$AWS_REGION" -var "app_name=$APP_NAME" -var "environment=$ENVIRONMENT"
+          terraform init -var "region=$AWS_REGION" -var "app_name=$APP_NAME" -var "environment=$ENVIRONMENT"
           terraform plan
   Deploy:
     needs: Test
