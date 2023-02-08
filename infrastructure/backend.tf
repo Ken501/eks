@@ -10,7 +10,7 @@
 terraform {
   backend "s3" {
     bucket = "kmartinez-projects"
-    key    = "infrastructure/k8s/us-east-1"
+    key    = "infrastructure/k8s"
     region = "us-east-1"
   }
 }
