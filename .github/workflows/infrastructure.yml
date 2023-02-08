@@ -6,12 +6,9 @@ on:
       - 'feature/**'
       - 'hotfix/**'
       - 'bug/**'
-    # paths:
-    #   - 'infrastructure/**'
-env:
-  AWS_REGION: us-east-1
-  APP_NAME: k8s
-  ENVIRONMENT: dev
+    paths:
+      - 'infrastructure/**'
+  workflow_dispatch:
 jobs: 
   Test:
     runs-on: ubuntu-latest
