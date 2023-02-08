@@ -27,10 +27,11 @@ jobs:
           terraform --version
           aws --version
 
-  # second-job:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Print greeting
-  #       run: echo "Hello World"
-  #     - name: Print Goodbye
-  #       run: echo "Done - bye!"
+  second-job:
+    needs: devDeployment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print greeting
+        run: echo "Hello World"
+      - name: Print Goodbye
+        run: echo "Done - bye!"
