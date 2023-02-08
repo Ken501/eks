@@ -37,6 +37,8 @@ jobs:
     needs: Test
     runs-on: ubuntu-latest
     steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
       - name: Terraform Init
         run: |
           cd infrastructure/
