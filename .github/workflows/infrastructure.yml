@@ -18,6 +18,8 @@ jobs:
           echo "Hello World 2!"
       - name: Print Goodbye
         run: echo "Done - bye!"
+      - name: Code checkout
+        uses: actions/checkout
       - name: List directory
         run: ls -la
 
