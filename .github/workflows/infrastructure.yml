@@ -18,17 +18,16 @@ jobs:
         uses: actions/checkout@v3
       - name: List directory
         run: |
-          echo "List directories recursive..."
+          pwd        
           ls -la -R
-          echo "Print current working directory..."
-          pwd
-
+      - name: Verify terraform version
+        run: terraform --version
       # - name: Terraform Init and Plan
       #   run: |
       #     cd infrastructure/
+      #     terraform --version
       #     terraform init
       #     terraform plan
-
   Deploy:
     needs: Test
     runs-on: ubuntu-latest
