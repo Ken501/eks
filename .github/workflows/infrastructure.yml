@@ -33,7 +33,7 @@ jobs:
           terraform plan
 
   Deploy:
-    needs: devDeployment
+    needs: Test
     runs-on: ubuntu-latest
     steps:
       - name: Print greeting
