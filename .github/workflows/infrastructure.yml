@@ -1,17 +1,16 @@
-name: Test TF Deploy
+name: Test and deploy infrastructure
 on:
   push:
     branches:
       - 'main'
-      - 'feature/**'
-      - 'hotfix/**'
-      - 'bug/**'
+      - 'dev/**'
     paths:
       - 'infrastructure/**'
   workflow_dispatch:
 
 jobs: 
   Test:
+    environment: dev
     runs-on: ubuntu-latest
     defaults:
       run:
