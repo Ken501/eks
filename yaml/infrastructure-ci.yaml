@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-    - master
+    - main
     - feature/*
     - fix/*
     - bug/*
@@ -27,7 +27,7 @@ stages:
 
 - stage: Dev
   displayName: 'Deploy Dev'
-  condition: and(always(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(always(), ne(variables['Build.SourceBranch'], 'refs/heads/main'))
   dependsOn: []
   variables:
   - name: 'environment'
@@ -52,7 +52,7 @@ stages:
 
   - job: devDestructionApproval
     displayName: Approve Dev Destruction
-    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/main'))
     dependsOn: ['deployDev']
     pool: server
     timeoutInMinutes: 43800
@@ -67,7 +67,7 @@ stages:
 
   - deployment: destroyDev
     displayName: Destroy Dev
-    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/main'))
     dependsOn: ['devDestructionApproval', 'deployDev']
     pool:
       vmImage: 'ubuntu-latest'
@@ -85,7 +85,7 @@ stages:
 
 - stage: Prod
   displayName: 'Deploy Prod'
-  condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/main')) #Needs to be changed to "master" to properly trigger - Broken on purpose for testing
+  condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/master')) #Needs to be changed to "main" to properly trigger - Broken on purpose for testing
   dependsOn: []
   variables:
   - name: 'environment'

@@ -2,7 +2,7 @@ name: Test TF Deploy
 on:
   push:
     branches:
-      - 'master'
+      - 'main'
       - 'feature/**'
       - 'hotfix/**'
       - 'bug/**'
