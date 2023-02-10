@@ -10,7 +10,7 @@ on:
 
 jobs: 
   Test:
-    environment: dev
+    environment: Test
     runs-on: ubuntu-latest
     defaults:
       run:
