@@ -2,10 +2,10 @@
 resource "aws_eks_cluster" "eks_cluster" {
   name     = "${var.environment}-${var.app_name}-cluster-${var.AWS_REGION}"
   role_arn = aws_iam_role.cluster_role.arn
-  version = var.kubernetes_version
+  version  = var.kubernetes_version
 
   vpc_config {
-    subnet_ids = local.public_subnet_ids[*]
+    subnet_ids             = local.public_subnet_ids[*]
     endpoint_public_access = true
   }
 
@@ -35,7 +35,7 @@ resource "aws_eks_node_group" "node_group" {
 
   tags = {
     "k8s.io/cluster-autoscaler/${aws_eks_cluster.eks_cluster.name}" = "owned"
-    "k8s.io/cluster-autoscaler/enabled" = true
+    "k8s.io/cluster-autoscaler/enabled"                             = true
   }
 
   depends_on = [

@@ -2,27 +2,27 @@
 
 variable "AWS_ACCESS_KEY_ID" {
   description = "AWS Access key"
-  type = string
+  type        = string
 }
 
 variable "AWS_SECRET_ACCESS_KEY" {
   description = "AWS Secret key"
-  type = string
+  type        = string
 }
 
 variable "AWS_REGION" {
   description = "AWS preferred region"
-  type = string
+  type        = string
 }
 
 variable "app_name" {
   description = "Application name"
-  type = string
+  type        = string
 }
 
 variable "environment" {
   description = "Application lifecycle stage"
-  type = string
+  type        = string
 }
 
 variable "additional_tags" {
@@ -41,18 +41,18 @@ variable "backend_bucket" {
 // Cluster variables
 variable "kubernetes_version" {
   description = "Kubernetes version"
-  type = string
-  default = "1.24"
+  type        = string
+  default     = "1.24"
 }
 
 variable "ingress_controller_version" {
   description = "AWS Ingress controller version"
-  type = string
-  default = "1.4.1"
+  type        = string
+  default     = "1.4.1"
 }
 
 variable "coredns_addon_version" {
   description = "CoreDNS Cluster CNI addon version"
-  type = string
-  default = "v1.8.7-eksbuild.3"
+  type        = string
+  default     = "v1.8.7-eksbuild.3"
 }
