@@ -7,7 +7,7 @@ resource "aws_vpc" "main" {
   tags = merge(
     var.additional_tags,
     {
-       Name = "${var.app_name}-VPC"
+      Name = "${var.app_name}-VPC"
     },
   )
 }
@@ -24,7 +24,7 @@ resource "aws_default_route_table" "main_table" {
   tags = merge(
     var.additional_tags,
     {
-       Name = "${var.app_name}-Main-Table"
+      Name = "${var.app_name}-Main-Table"
     },
   )
 }
@@ -46,11 +46,11 @@ resource "aws_default_security_group" "default" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   tags = merge(
     var.additional_tags,
     {
-       Name = "${var.app_name}-Default-SG"
+      Name = "${var.app_name}-Default-SG"
     },
   )
 }
@@ -62,61 +62,61 @@ resource "aws_internet_gateway" "gw" {
   tags = merge(
     var.additional_tags,
     {
-       Name = "${var.app_name}-GW"
+      Name = "${var.app_name}-GW"
     },
   )
 }
 
 // Create Public Subnets
 resource "aws_subnet" "public01" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = local.public_subnets[0]
-  availability_zone = local.az[0]
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = local.public_subnets[0]
+  availability_zone       = local.az[0]
   map_public_ip_on_launch = true
 
   tags = {
-   "Name" = "${var.app_name}-Public-1"
-   "kubernetes.io/cluster/${local.cluster_name}" = "owned"
-   "kubernetes.io/role/elb" = "1"
+    "Name"                                        = "${var.app_name}-Public-1"
+    "kubernetes.io/cluster/${local.cluster_name}" = "owned"
+    "kubernetes.io/role/elb"                      = "1"
   }
 }
 
 resource "aws_subnet" "public02" {
-  vpc_id = aws_vpc.main.id
-  cidr_block = local.public_subnets[1]
-  availability_zone = local.az[1]
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = local.public_subnets[1]
+  availability_zone       = local.az[1]
   map_public_ip_on_launch = true
 
   tags = {
-   "Name" = "${var.app_name}-Public-2"
-   "kubernetes.io/cluster/${local.cluster_name}" = "owned"
-   "kubernetes.io/role/elb" = "1"
+    "Name"                                        = "${var.app_name}-Public-2"
+    "kubernetes.io/cluster/${local.cluster_name}" = "owned"
+    "kubernetes.io/role/elb"                      = "1"
   }
 }
 
 
 // Create Private Subnets
 resource "aws_subnet" "private01" {
-    vpc_id = aws_vpc.main.id
-    cidr_block = local.private_subnets[0]
-    availability_zone = local.az[0]
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = local.private_subnets[0]
+  availability_zone = local.az[0]
 
   tags = {
-   "Name" = "${var.app_name}-Private-1"
-   "kubernetes.io/cluster/${local.cluster_name}" = "owned"
-   "kubernetes.io/role/internal-elb" = "1"
+    "Name"                                        = "${var.app_name}-Private-1"
+    "kubernetes.io/cluster/${local.cluster_name}" = "owned"
+    "kubernetes.io/role/internal-elb"             = "1"
   }
 }
 
 resource "aws_subnet" "private02" {
-    vpc_id = aws_vpc.main.id
-    cidr_block = local.private_subnets[1]
-    availability_zone = local.az[1]
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = local.private_subnets[1]
+  availability_zone = local.az[1]
 
   tags = {
-   "Name" = "${var.app_name}-Private-2"
-   "kubernetes.io/cluster/${local.cluster_name}" = "owned"
-   "kubernetes.io/role/internal-elb" = "1"
+    "Name"                                        = "${var.app_name}-Private-2"
+    "kubernetes.io/cluster/${local.cluster_name}" = "owned"
+    "kubernetes.io/role/internal-elb"             = "1"
   }
 }
 
@@ -134,7 +134,7 @@ resource "aws_route_table" "public_route" {
   tags = merge(
     var.additional_tags,
     {
-       Name = "${var.app_name}-GW-Table"
+      Name = "${var.app_name}-GW-Table"
     },
   )
 }
@@ -153,7 +153,7 @@ resource "aws_route_table" "private_route_01" {
   tags = merge(
     var.additional_tags,
     {
-       Name = "${var.app_name}-NAT-Table-1"
+      Name = "${var.app_name}-NAT-Table-1"
     },
   )
 }
@@ -169,7 +169,7 @@ resource "aws_route_table" "private_route_02" {
   tags = merge(
     var.additional_tags,
     {
-       Name = "${var.app_name}-NAT-Table-2"
+      Name = "${var.app_name}-NAT-Table-2"
     },
   )
 }
@@ -209,8 +209,8 @@ resource "aws_eip" "nat-eip01" {
 }
 
 resource "aws_eip" "nat-eip02" {
-    vpc = true
-    depends_on = [
+  vpc = true
+  depends_on = [
     aws_vpc.main
   ]
 }
@@ -224,19 +224,19 @@ resource "aws_nat_gateway" "gw01" {
   tags = merge(
     var.additional_tags,
     {
-       Name = "${var.app_name}-GW-1"
+      Name = "${var.app_name}-GW-1"
     },
   )
 }
 
 resource "aws_nat_gateway" "gw02" {
   allocation_id = aws_eip.nat-eip02.id
-  subnet_id = aws_subnet.public02.id
+  subnet_id     = aws_subnet.public02.id
 
   tags = merge(
     var.additional_tags,
     {
-       Name = "${var.app_name}-GW-2"
+      Name = "${var.app_name}-GW-2"
     },
   )
 }
