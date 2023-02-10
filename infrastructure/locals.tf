@@ -4,7 +4,6 @@ locals {
   public_subnet_ids  = [aws_subnet.public01.id, aws_subnet.public02.id]
   private_subnet_ids = [aws_subnet.private01.id, aws_subnet.private02.id]
   az                 = ["us-east-1a", "us-east-1b"]
-
   cluster_name = "${var.environment}-${var.app_name}-cluster-${var.AWS_REGION}"
 
 }
