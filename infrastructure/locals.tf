@@ -7,4 +7,9 @@ locals {
 
   cluster_name = "${var.environment}-${var.app_name}-cluster-${var.AWS_REGION}"
 
+  # Backend locals
+  backend_bucket = "kmartinez-projects"
+  key    = "${var.environment}/${var.app_name}/infrastructure/${var.AWS_REGION}"
+  region = var.AWS_REGION
+
 }
