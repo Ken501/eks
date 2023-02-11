@@ -12,8 +12,8 @@ on:
 
 jobs: 
   Test:
-    #if: always() && github.ref == 'refs/heads/feature/**' || 'refs/heads/hotfix/**' || 'refs/heads/bug/**'
-    if: always() && github.ref == 'refs/heads/feature/**'
+    if: ${{ always() && (github.ref == 'refs/heads/feature/**') || ('refs/heads/hotfix/**') || ('refs/heads/bug/**') }}
+    #if: always() && github.ref == 'refs/heads/feature/**'
     environment: Test
     runs-on: ubuntu-latest
     defaults:
@@ -78,8 +78,9 @@ jobs:
             })
 
   Deploy-test:
+    if: ${{ always() && (github.ref == 'refs/heads/feature/**') || ('refs/heads/hotfix/**') || ('refs/heads/bug/**') }}
     #if: success() && github.ref == 'refs/heads/feature/**' || 'refs/heads/hotfix/**' || 'refs/heads/bug/**'
-    if: always() && github.ref == 'refs/heads/feature/**'
+    #if: always() && github.ref == 'refs/heads/feature/**'
     needs: Test
     environment: Test
     runs-on: ubuntu-latest
