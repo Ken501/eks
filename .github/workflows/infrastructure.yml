@@ -6,6 +6,7 @@ on:
       - 'feature/**'
       - 'hotfix/**'
       - 'bug/**'
+      - 'test/**'
     paths:
       - 'infrastructure/**'
   workflow_dispatch:
