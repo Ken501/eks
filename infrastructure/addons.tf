@@ -1,5 +1,5 @@
 // Cluster Add-ons
-# Test comment
+
 //CoreDNS
 resource "aws_eks_addon" "coredns_addon" {
   cluster_name = aws_eks_cluster.eks_cluster.name
