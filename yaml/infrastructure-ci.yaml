@@ -85,7 +85,7 @@ stages:
 
 - stage: Prod
   displayName: 'Deploy Prod'
-  condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/master')) #Needs to be changed to "main" to properly trigger - Broken on purpose for testing
+  condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   dependsOn: []
   variables:
   - name: 'environment'
