@@ -146,7 +146,7 @@ jobs:
             })
 
   Destroy-dev:
-    if: succeeded() && github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     environment: dev
     needs: [Test, Deploy-dev]
     runs-on: ubuntu-latest
