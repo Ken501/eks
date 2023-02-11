@@ -3,14 +3,16 @@ on:
   push:
     branches:
       - 'main'
-      - 'dev/**'
+      - 'feature/**'
+      - 'hotfix/**'
+      - 'bug/**'
     paths:
       - 'infrastructure/**'
   workflow_dispatch:
 
 jobs: 
   Test:
-    if: github.ref == 'refs/heads/dev/**'
+    if: always() && github.ref == 'refs/heads/feature/**' || 'refs/heads/hotfix/**' || 'refs/heads/bug/**'
     environment: Test
     runs-on: ubuntu-latest
     defaults:
@@ -73,25 +75,67 @@ jobs:
             repo: context.repo.repo,
             body: output
             })
-      # - name: Code checkout
-      #   uses: actions/checkout@v3
-      # - name: List directory
-      #   run: |
-      #     pwd        
-      #     ls -la -R
-      # - name: Verify terraform version
-      #   run: terraform --version
-      # - name: Terraform Init and Plan
-      #   run: |
-      #     cd infrastructure/
-      #     ls -la
-      #     terraform fmt
-      #     terraform init -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-      #     terraform plan -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var "AWS_REGION=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}"
+
+  Deploy-test:
+    if: success() && github.ref == 'refs/heads/feature/**' || 'refs/heads/hotfix/**' || 'refs/heads/bug/**'
+    needs: Test
+    environment: Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infrastructure/
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var "AWS_REGION=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}" -auto-approve
+
+      - uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+            <details><summary>Validation Output</summary>
+
+            \`\`\`\n
+            ${{ steps.validate.outputs.stdout }}
+            \`\`\`
+
+            </details>
+
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+            <details><summary>Show Plan</summary>
+
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
+
+            </details>
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
+            github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+            })           
+
   Deploy-dev:
     if: always() && github.ref == 'refs/heads/main'
     environment: dev
-    needs: Test
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -146,9 +190,9 @@ jobs:
             })
 
   Destroy-dev:
-    if: github.ref == 'refs/heads/main'
+    if: success() && github.ref == 'refs/heads/main'
     environment: dev
-    needs: [Test, Deploy-dev]
+    needs: Deploy-dev
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -201,6 +245,29 @@ jobs:
             repo: context.repo.repo,
             body: output
             })
+
+
+
+
+
+
+
+
+      # - name: Code checkout
+      #   uses: actions/checkout@v3
+      # - name: List directory
+      #   run: |
+      #     pwd        
+      #     ls -la -R
+      # - name: Verify terraform version
+      #   run: terraform --version
+      # - name: Terraform Init and Plan
+      #   run: |
+      #     cd infrastructure/
+      #     ls -la
+      #     terraform fmt
+      #     terraform init -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+      #     terraform plan -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var "AWS_REGION=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}"            
 
       # - name: Git checkout
       #   uses: actions/checkout@v3
