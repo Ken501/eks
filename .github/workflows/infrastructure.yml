@@ -12,7 +12,7 @@ on:
 
 jobs: 
   Test:
-    if: always() && github.ref == 'refs/heads/feature/**' || 'refs/heads/hotfix/**' || 'refs/heads/bug/**'
+    if: ${{ always() && github.ref == 'refs/heads/feature/**' || 'refs/heads/hotfix/**' || 'refs/heads/bug/**' }}
     environment: Test
     runs-on: ubuntu-latest
     defaults:
