@@ -94,8 +94,8 @@ jobs:
         run: terraform init -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -backend-config="key=${{ vars.ENVIRONMENT }}/${{ vars.APP_NAME }}/infrastructure/${{ vars.AWS_REGION }}.tfstate"
 
       - name: Terraform Apply
-        id: apply
-        run: terraform apply -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var "AWS_REGION=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}" -auto-approve
+        id: destroy
+        run: terraform destroy -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var "AWS_REGION=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}" -auto-approve
 
   Destroy-test:
     if: success() && github.ref != 'refs/heads/main'
