@@ -77,7 +77,7 @@ jobs:
             })
 
   Deploy-test:
-    if: always() && github.ref != 'refs/heads/main'
+    if: success() && github.ref != 'refs/heads/main'
     needs: Test
     environment: Test
     runs-on: ubuntu-latest
