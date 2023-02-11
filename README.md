@@ -1,3 +1,4 @@
+[![Test and deploy infrastructure](https://github.com/Ken501/eks/actions/workflows/infrastructure.yml/badge.svg)](https://github.com/Ken501/eks/actions/workflows/infrastructure.yml)
 <!-- Logos -->
 <!-- ![Tomcat image](/.attachments/tomcat-logo.png =250x200) -->
 ![Monkey Typing](/.attachments/monkey.gif)
