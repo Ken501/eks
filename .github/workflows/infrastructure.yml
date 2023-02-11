@@ -10,7 +10,7 @@ on:
 
 jobs: 
   Test:
-    if: always() && github.ref == 'refs/heads/dev/**'
+    if: github.ref == 'refs/heads/dev/**'
     environment: Test
     runs-on: ubuntu-latest
     defaults:
