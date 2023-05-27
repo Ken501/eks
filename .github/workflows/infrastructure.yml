@@ -15,7 +15,7 @@ jobs:
   Test:
     if: always() && github.ref != 'refs/heads/main'
     environment: Test
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: infrastructure/
@@ -29,7 +29,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -backend-config="key=${{ vars.ENVIRONMENT }}/${{ vars.APP_NAME }}/infrastructure/${{ vars.AWS_REGION }}.tfstate"
+        run: terraform init -backend-config="access_key=$(vault read -field=access_key aws/creds/nonprod-deployments)" -backend-config="secret_key=$(vault read -field=secret_key aws/creds/nonprod-deployments)" -backend-config="key=${{ vars.ENVIRONMENT }}/${{ vars.APP_NAME }}/infrastructure/${{ vars.AWS_REGION }}.tfstate"
 
       - name: Terraform Validate
         id: validate
@@ -37,7 +37,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var "AWS_REGION=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}"
+        run: terraform plan -var "AWS_ACCESS_KEY_ID=$$(vault read -field=access_key aws/creds/nonprod-deployments)" -var "AWS_SECRET_ACCESS_KEY=$(vault read -field=secret_key aws/creds/nonprod-deployments)" -var "AWS_REGION=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}"
         continue-on-error: true
 
       - uses: actions/github-script@v6
@@ -81,7 +81,7 @@ jobs:
     if: success() && github.ref != 'refs/heads/main'
     needs: Test
     environment: Test
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: infrastructure/
@@ -91,17 +91,17 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -backend-config="key=${{ vars.ENVIRONMENT }}/${{ vars.APP_NAME }}/infrastructure/${{ vars.AWS_REGION }}.tfstate"
+        run: terraform init -backend-config="access_key=$(vault read -field=access_key aws/creds/nonprod-deployments)" -backend-config="secret_key=$(vault read -field=secret_key aws/creds/nonprod-deployments)" -backend-config="key=${{ vars.ENVIRONMENT }}/${{ vars.APP_NAME }}/infrastructure/${{ vars.AWS_REGION }}.tfstate"
 
       - name: Terraform Apply
         id: apply
-        run: terraform apply -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var "AWS_REGION=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}" -auto-approve
+        run: terraform apply -var "AWS_ACCESS_KEY_ID=$(vault read -field=access_key aws/creds/nonprod-deployments)" -var "AWS_SECRET_ACCESS_KEY=$(vault read -field=secret_key aws/creds/nonprod-deployments)" -var "AWS_REGION=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}" -auto-approve
 
   Destroy-test:
     if: success() && github.ref != 'refs/heads/main'
     environment: Test
     needs: [Test, Deploy-test]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: infrastructure/
@@ -111,16 +111,16 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -backend-config="key=${{ vars.ENVIRONMENT }}/${{ vars.APP_NAME }}/infrastructure/${{ vars.AWS_REGION }}.tfstate"
+        run: terraform init -backend-config="access_key=$(vault read -field=access_key aws/creds/nonprod-deployments)" -backend-config="secret_key=$(vault read -field=secret_key aws/creds/nonprod-deployments)" -backend-config="key=${{ vars.ENVIRONMENT }}/${{ vars.APP_NAME }}/infrastructure/${{ vars.AWS_REGION }}.tfstate"
 
       - name: Terraform Destroy
         id: destroy
-        run: terraform destroy -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var "AWS_REGION=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}" -auto-approve                 
+        run: terraform destroy -var "AWS_ACCESS_KEY_ID=$(vault read -field=access_key aws/creds/nonprod-deployments)" -var "AWS_SECRET_ACCESS_KEY=$(vault read -field=secret_key aws/creds/nonprod-deployments)" -var "AWS_REGION=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}" -auto-approve                 
 
   Deploy-dev:
     if: always() && github.ref == 'refs/heads/main'
     environment: dev
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: infrastructure/
@@ -130,17 +130,17 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -backend-config="key=${{ vars.ENVIRONMENT }}/${{ vars.APP_NAME }}/infrastructure/${{ vars.AWS_REGION }}.tfstate"
+        run: terraform init -backend-config="access_key=$(vault read -field=access_key aws/creds/nonprod-deployments)" -backend-config="secret_key=$(vault read -field=secret_key aws/creds/nonprod-deployments)" -backend-config="key=${{ vars.ENVIRONMENT }}/${{ vars.APP_NAME }}/infrastructure/${{ vars.AWS_REGION }}.tfstate"
 
       - name: Terraform Apply
         id: apply
-        run: terraform apply -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var "AWS_REGION=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}" -auto-approve
+        run: terraform apply -var "AWS_ACCESS_KEY_ID=$(vault read -field=access_key aws/creds/nonprod-deployments)" -var "AWS_SECRET_ACCESS_KEY=$(vault read -field=secret_key aws/creds/nonprod-deployments)" -var "AWS_REGION=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}" -auto-approve
 
   Destroy-dev:
     if: success() && github.ref == 'refs/heads/main'
     environment: dev
     needs: Deploy-dev
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: infrastructure/
@@ -150,8 +150,8 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -backend-config="key=${{ vars.ENVIRONMENT }}/${{ vars.APP_NAME }}/infrastructure/${{ vars.AWS_REGION }}.tfstate"
+        run: terraform init -backend-config="access_key=$(vault read -field=access_key aws/creds/nonprod-deployments)" -backend-config="secret_key=$(vault read -field=secret_key aws/creds/nonprod-deployments)" -backend-config="key=${{ vars.ENVIRONMENT }}/${{ vars.APP_NAME }}/infrastructure/${{ vars.AWS_REGION }}.tfstate"
 
       - name: Terraform Destroy
         id: destroy
-        run: terraform destroy -var "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var "AWS_REGION=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}" -auto-approve
+        run: terraform destroy -var "AWS_ACCESS_KEY_ID=$(vault read -field=access_key aws/creds/nonprod-deployments)" -var "AWS_SECRET_ACCESS_KEY=$(vault read -field=secret_key aws/creds/nonprod-deployments)" -var "AWS_REGION=${{ vars.AWS_REGION }}" -var "app_name=${{ vars.APP_NAME }}" -var "environment=${{ vars.ENVIRONMENT }}" -auto-approve
